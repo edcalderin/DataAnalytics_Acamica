@@ -26,5 +26,5 @@ ORDER BY avg_acce DESC
 CONCLUSIONES:
 
 Query 1: Los primeros modelos tienden a tener menor peso
-Query 2: Los ultimos modelos tienden a tener una mayor aceleracion
+Query 2: Los últimos modelos tienden a tener una mayor aceleración
 */
