@@ -10,23 +10,23 @@
 -----------------------------------------------------------------------------------------------
 
 -- Creamos la tabla donde vamos a alojar los datos (Â¡Guiate con Kaggle para crearla!)
-CREATE TABLE iris('COMPLETAR' FLOAT, 
-				  'COMPLETAR' FLOAT, 
-				  'COMPLETAR' FLOAT, 
-				  'COMPLETAR' FLOAT,
-				  'COMPLETAR' FLOAT,
-				  'COMPLETAR' VARCHAR(24));
+CREATE TABLE iris(Id SMALLINT, 
+				  SepalLengthCm FLOAT, 
+				  SepalWidthCm FLOAT, 
+				  PetalLengthCm FLOAT,
+				  PetalWidthCm FLOAT,
+				  Species VARCHAR(24));
 
 -- Corroboramos la  estructura de la tabla
-SELECT * FROM 'COMPLETAR';
+SELECT * FROM iris;
 
 -- Poblamos la tabla
-COPY 'COMPLETAR'
-FROM 'C:/Users/Public/Iris.csv'
+COPY iris
+FROM 'C:\Users\Erick\Projects\DataAnlytics_Acamica\Meeting_5\Iris.csv'
 DELIMITER ',' CSV HEADER;
 
 -- Corroboramos tener datos
-'COMPLETAR LA LINEA'
+SELECT * FROM iris;
 
 
 -----------------------------------------------------------------------------------------------
@@ -34,33 +34,37 @@ DELIMITER ',' CSV HEADER;
 -----------------------------------------------------------------------------------------------
 
 -- Estadisticos descriptivos por especie (tendencia central)
-SELECT 	'COMPLETAR',
- 		AVG(SepalLengthCm) AS SepalLengthCm_promedio,
+SELECT 	species,
+ 		ROUND(CAST(AVG(SepalLengthCm) AS DECIMAL), 2) AS SepalLengthCm_promedio,
 		percentile_cont(0.5) within group (order by SepalLengthCm) AS SepalLengthCm_mediana,
- 		'COMPLETAR'(SepalWidthCm) AS SepalWidthCm_promedio,
+		MODE() WITHIN GROUP (ORDER BY SepalLengthCm) AS SepalLengthCm_moda,
+ 		ROUND(CAST(AVG(SepalWidthCm) AS DECIMAL), 2) AS SepalWidthCm_promedio,
 		percentile_cont(0.5) within group (order by SepalWidthCm) AS SepalWidthCm_mediana,
- 		'COMPLETAR'(PetalLengthCm) AS PetalLengthCm_promedio,
+		MODE() WITHIN GROUP (ORDER BY SepalWidthCm) AS SepalWidthCm_moda,
+ 		ROUND(CAST(AVG(PetalLengthCm) AS DECIMAL), 2) AS PetalLengthCm_promedio,
 		percentile_cont(0.5) within group (order by PetalLengthCm) AS PetalLengthCm_mediana,
- 		'COMPLETAR'(PetalWidthCm) AS PetalWidthCm_promedio,
-		percentile_cont(0.5) within group (order by PetalWidthCm) AS PetalWidthCm_mediana
-FROM 'COMPLETAR'
+		MODE() WITHIN GROUP (ORDER BY PetalLengthCm) AS PetalLengthCm_moda,
+ 		ROUND(CAST(AVG(PetalWidthCm) AS DECIMAL), 2) AS PetalWidthCm_promedio,
+		percentile_cont(0.5) within group (order by PetalWidthCm) AS PetalWidthCm_mediana,
+		MODE() WITHIN GROUP (ORDER BY PetalWidthCm) AS PetalWidthCm_moda
+FROM iris
 GROUP BY Species;
 
 -- Estadisticos descriptivos por especie (dispersion y rango)
 SELECT 	Species,
-		stddev(SepalLengthCm) AS SepalLengthCm_sd,
+		ROUND(CAST(stddev(SepalLengthCm) AS DECIMAL), 2) AS SepalLengthCm_sd,
 		MIN(SepalLengthCm) AS SepalLengthCm_min,
 		MAX(SepalLengthCm) AS SepalLengthCm_max,
-		'COMPLETAR'(SepalWidthCm) AS SepalWidthCm_sd,
-		'COMPLETAR'(SepalWidthCm) AS SepalWidthCm_min,
-		'COMPLETAR'(SepalWidthCm) AS SepalWidthCm_max,
-		'COMPLETAR'(PetalLengthCm) AS PetalLengthCm_sd,
-		'COMPLETAR'(PetalLengthCm) AS PetalLengthCm_min,
-		'COMPLETAR'(PetalLengthCm) AS PetalLengthCm_max,
-		'COMPLETAR'(PetalWidthCm) AS PetalWidthCm_sd,
-		'COMPLETAR'(PetalWidthCm) AS PetalWidthCm_min,
-		'COMPLETAR'(PetalWidthCm) AS PetalWidthCm_max
-FROM 'COMPLETAR'
+		ROUND(CAST(stddev(SepalWidthCm) AS DECIMAL), 2) AS SepalWidthCm_sd,
+		MIN(SepalWidthCm) AS SepalWidthCm_min,
+		MAX(SepalWidthCm) AS SepalWidthCm_max,
+		ROUND(CAST(stddev(PetalLengthCm) AS DECIMAL), 2)  AS PetalLengthCm_sd,
+		MIN(PetalLengthCm) AS PetalLengthCm_min,
+		MAX(PetalLengthCm) AS PetalLengthCm_max,
+		ROUND(CAST(stddev(PetalWidthCm) AS DECIMAL), 2) AS PetalWidthCm_sd,
+		MIN(PetalWidthCm) AS PetalWidthCm_min,
+		MAX(PetalWidthCm) AS PetalWidthCm_max
+FROM iris
 GROUP BY 1;
 
 
@@ -73,8 +77,8 @@ GROUP BY 1;
 -- Para esto, investiga la funcion ROUND() para que todo tenga 2 decimales. 
 
 -- 2)
--- Ahora que conoces los estadisticos, Â¿te imaginas la forma de la distribucion de cada especie?
--- Â¡Debatelo con tus compaÃ±eros!
+-- Ahora que conoces los estadisticos, ¿Te imaginas la forma de la distribucion de cada especie?
+-- ¡Debatelo con tus compañeros!
 
 
 
