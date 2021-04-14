@@ -80,6 +80,15 @@ GROUP BY 1;
 -- Ahora que conoces los estadisticos, ¿Te imaginas la forma de la distribucion de cada especie?
 -- ¡Debatelo con tus compañeros!
 
-
+-- 3)
+-- ¿Cual es la especie con un largo de pétalo mayor, en promedio? Esta especie, ¿es muy dispersa respecto al resto?
+SELECT 	Species,		
+		ROUND(CAST(stddev(PetalLengthCm) AS DECIMAL), 2)  AS PetalLengthCm_sd,
+		MIN(PetalLengthCm) AS PetalLengthCm_min,
+		MAX(PetalLengthCm) AS PetalLengthCm_max
+FROM iris
+GROUP BY 1;
+-- R: Virginica es la especie con largo de pétalo mayor, y es la más dispersa teniendo el valor de su desviación estandas y 
+--	  comparándola con el resto.
 
 
