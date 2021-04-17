@@ -66,5 +66,67 @@ SELECT 	species,
 FROM iris
 GROUP BY species
 
+-----------------------------------------------------------------------------------------------
+----- CHANLLENGE PRO --------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+
+--1. ¿Cuál es el  jugador más jóven de cada país?
+
+-- CON Window Functions
+SELECT "name", nationality, birth_date FROM (
+	SELECT "name", nationality, birth_date, RANK () OVER (PARTITION BY nationality ORDER BY birth_date) 
+	FROM fifa_players fp
+) query_wf
+WHERE rank=3
+
+-- SIN Window Functions
+SELECT fp.nationality , fp2.max_birthday, fp."name"  FROM fifa_players fp
+INNER JOIN (
+	SELECT nationality, MAX(birth_date) AS max_birthday FROM fifa_players GROUP BY 1
+) fp2
+ON fp.nationality = fp2.nationality
+WHERE fp.birth_date = fp2.max_birthday
+ORDER BY 1
+
+
+/*2. Cuántos jugadores nacieron en la misma fecha y en el mismo país. 
+	(Ideal que el resultado muestre los nombres de los jugadores)*/
+
+DROP TABLE IF EXISTS temp_groups_fifa;
+
+CREATE TEMP TABLE temp_groups_fifa AS (
+	SELECT query_wf.* FROM fifa_players fp 
+	INNER JOIN 
+	(
+		SELECT name, nationality, birth_date, 
+		ROW_NUMBER () OVER( PARTITION BY nationality, birth_date) AS count_groups,
+		TO_CHAR(birth_date, 'day') AS day_of_week		
+		FROM fifa_players
+	) query_wf
+	ON query_wf.nationality = fp.nationality AND query_wf.birth_date = fp.birth_date 
+	WHERE query_wf.count_groups > 1
+	ORDER BY fp.nationality
+);
+
+SELECT * FROM temp_groups_fifa
+
+-- 3. Cual es el día de la semana que se da más este acontecimiento.
+
+--SIN Window Functions
+SELECT day_of_week, COUNT(*) AS max FROM temp_groups_fifa
+GROUP BY day_of_week
+ORDER BY max DESC
+--LIMIT 1
+
+--CON Window Functions
+SELECT day_of_week, MAX(frequency) FROM (
+	SELECT day_of_week, ROW_NUMBER() OVER(PARTITION BY day_of_week) AS frequency FROM temp_groups_fifa
+) subquery
+GROUP BY day_of_week
+ORDER BY max DESC
+--LIMIT 1
+
+-- Borrar tabla temporal
+DROP TABLE IF EXISTS temp_groups_fifa;
 
 
