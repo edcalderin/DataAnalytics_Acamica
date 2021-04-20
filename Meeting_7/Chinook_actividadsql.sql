@@ -46,23 +46,23 @@ ORDER BY q_titulos DESC
 LIMIT 10;
 
 -- Vemos los generos que estan presentes en mas playlists
-SELECT 	'COMPLETAR'.'COMPLETAR', 
-		count(distinct PlaylistTrack.PlaylistId) playlists, 
-		count(distinct PlaylistTrack.TrackId) tracks
-FROM Genre
-JOIN Track ON 'COMPLETAR'.'COMPLETAR' = 'COMPLETAR'.'COMPLETAR'
-JOIN PlaylistTrack ON 'COMPLETAR'.'COMPLETAR' = 'COMPLETAR'.'COMPLETAR'
+SELECT 	"Genre"."Name", 
+		count(distinct "PlaylistTrack"."PlaylistId") playlists, 
+		count(distinct "PlaylistTrack"."TrackId") tracks
+FROM "Genre"
+JOIN "Track" USING ("GenreId")
+JOIN "PlaylistTrack" USING ("TrackId")
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 10;
 
 -- Vemos los generos que tienen incorporados mas tracks en playlists
-SELECT	Genre.Name, 
-		count(distinct 'COMPLETAR'.'COMPLETAR') playlists, 
-		count(distinct 'COMPLETAR'.'COMPLETAR') tracks
-FROM Genre
-JOIN Track ON 'COMPLETAR'.'COMPLETAR' = 'COMPLETAR'.'COMPLETAR'
-JOIN PlaylistTrack ON 'COMPLETAR'.'COMPLETAR' = 'COMPLETAR'.'COMPLETAR'
+SELECT	"Genre"."Name", 
+		count(distinct "PlaylistTrack"."PlaylistId") playlists, 
+		count(distinct "PlaylistTrack"."TrackId") tracks
+FROM "Genre"
+JOIN "Track" USING ("GenreId")
+JOIN "PlaylistTrack" USING ("TrackId")
 GROUP BY 1
 ORDER BY 3 DESC
 LIMIT 10;
